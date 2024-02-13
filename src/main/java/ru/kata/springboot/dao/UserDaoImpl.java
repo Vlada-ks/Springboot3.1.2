@@ -1,10 +1,10 @@
 package ru.kata.springboot.dao;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import ru.kata.springboot.model.User;
-
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.EntityManager;
 
 import java.util.List;
 
@@ -13,10 +13,6 @@ import java.util.List;
 public class UserDaoImpl implements UserDao {
     @PersistenceContext
     private EntityManager entityManager;
-
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
 
     @Override
     public List<User> getAllUsers() {
@@ -31,11 +27,19 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserById(Integer id) {
-        return entityManager.find(User.class, id);
+        User user = entityManager.find(User.class, id);
+        if (user == null) {
+            throw new EntityNotFoundException("User with this id not found");
+        }
+        return user;
     }
 
     @Override
     public void updateUser(Integer id, User user) {
+        User userid = entityManager.find(User.class, user.getId());
+        if (userid == null) {
+            throw new EntityNotFoundException("User with this id not found");
+        }
         entityManager.merge(user);
         entityManager.flush();
     }
@@ -43,6 +47,9 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void deleteUser(Integer id) {
         User user = this.getUserById(id);
+        if (user == null) {
+            throw new EntityNotFoundException("User with this id not found");
+        }
         entityManager.remove(user);
     }
 }

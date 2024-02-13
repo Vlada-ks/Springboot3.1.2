@@ -2,14 +2,14 @@ package ru.kata.springboot.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.kata.springboot.dao.UserDao;
 import ru.kata.springboot.model.User;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
 @Transactional
+@Service
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
@@ -25,6 +25,7 @@ public class UserServiceImpl implements UserService {
         return userDao.getAllUsers();
     }
 
+
     @Override
     public void saveUser(User user) {
         userDao.saveUser(user);
@@ -35,6 +36,7 @@ public class UserServiceImpl implements UserService {
     public User getUserById(Integer id) {
         return userDao.getUserById(id);
     }
+
 
     @Override
     public void updateUser(Integer id, User user) {

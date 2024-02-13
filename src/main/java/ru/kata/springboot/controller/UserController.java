@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,13 +44,13 @@ public class UserController {
         return "redirect:/";
     }
 
-    @GetMapping("/update")
+    @PostMapping("/update")
     public String updateUser(@RequestParam("id") Integer id, Model model) {
         model.addAttribute("newUser", userService.getUserById(id));
         return "userAdd";
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public String deleteUser(@RequestParam("id") Integer id) {
         userService.deleteUser(id);
         return "redirect:/";
